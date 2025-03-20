@@ -19,36 +19,61 @@
     </div>
 
     <script>
-        const resultado = document.getElementById("resultado")
+        // Captura a referência ao elemento com id "resultado" para poder manipular o conteúdo dele depois
+        const resultado = document.getElementById("resultado");
 
+        // Função chamada ao clicar no botão "Pesquisar"
         function pegarLocalizacao() {
+            // Verifica se o navegador suporta o recurso de geolocalização
             if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(mostrarPosicao, mostrarErro)
+                // Se suportar, tenta obter a posição atual do usuário
+                // O método getCurrentPosition recebe duas funções:
+                // - A primeira (mostrarPosicao) é chamada se a localização for obtida com sucesso
+                // - A segunda (mostrarErro) é chamada se houver algum erro ao tentar obter a localização
+                // - O terceiro (opcional) permite personalizações 
+                navigator.geolocation.getCurrentPosition(mostrarPosicao, mostrarErro, {
+                    enableHighAccuracy: true, // Pede mais precisão
+                    timeout: 10000, // Espera até 10 segundos para obter a posição
+                    maximumAge: 0 // Garante que a posição não seja uma antiga salva em cache
+                });
             } else {
-                myElement.innerHTML = "Geolocalização não é suportada por este navegador"
+                // Caso o navegador não suporte geolocalização, exibe uma mensagem de aviso
+                resultado.innerHTML = "Geolocalização não é suportada por este navegador";
             }
         }
 
+        // Função chamada se houver erro ao tentar obter a localização
         function mostrarErro(error) {
+            // Usa um "switch" para tratar diferentes tipos de erro que podem ocorrer
             switch (error.code) {
                 case error.PERMISSION_DENIED:
-                    resultado.innerHTML = "O usuário negou a solicitação de geolocalização."
+                    // Erro 1: O usuário negou a permissão para o site acessar a localização
+                    resultado.innerHTML = "O usuário negou a solicitação de geolocalização.";
                     break;
                 case error.POSITION_UNAVAILABLE:
-                    resultado.innerHTML = "As informações de localização não estão disponíveis."
+                    // Erro 2: A localização não está disponível (GPS desligado, sem internet, etc.)
+                    resultado.innerHTML = "As informações de localização não estão disponíveis.";
                     break;
                 case error.TIMEOUT:
-                    resultado.innerHTML = "A solicitação para obter a localização do usuário expirou"
+                    // Erro 3: O tempo para obter a localização expirou
+                    resultado.innerHTML = "A solicitação para obter a localização do usuário expirou";
                     break;
                 case error.UNKNOWN_ERROR:
-                    resultado.innerHTML = "Ocorreu um erro desconhecido."
+                    // Erro 4: Algum erro desconhecido aconteceu
+                    resultado.innerHTML = "Ocorreu um erro desconhecido.";
                     break;
             }
         }
 
+        // Função chamada quando a localização é obtida com sucesso
         function mostrarPosicao(posicao) {
+            // Insere a latitude e longitude no elemento "resultado"
+            // `posicao.coords.latitude` e `posicao.coords.longitude` pegam os dados da posição retornada
             resultado.innerHTML = `Latitude: ${posicao.coords.latitude}
-            <br>Longitude: ${posicao.coords.longitude} <br> <a href="https://www.google.com.br/maps/@${posicao.coords.latitude},${posicao.coords.longitude},20z?entry=ttu"><h4>Ver no mapa</h4></a>`
+    <br>Longitude: ${posicao.coords.longitude}
+    <br> <a href="https://www.google.com.br/maps/@${posicao.coords.latitude},${posicao.coords.longitude},20z?entry=ttu" target="_blank">
+    <h4>Ver no mapa</h4></a>`;
+            // O link gerado leva diretamente para o Google Maps com as coordenadas obtidas
         }
 
     </script>
