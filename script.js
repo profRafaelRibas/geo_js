@@ -1,15 +1,3 @@
-// Inicializa o mapa com uma posição padrão
-const mapa = L.map("mapa").setView([0, 0], 2);
-
-// Adiciona o mapa do OpenStreetMap
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: '© OpenStreetMap contributors',
-}).addTo(mapa);
-
-// Variáveis globais para armazenar a latitude e longitude
-let latitude = null;
-let longitude = null;
-
 // Captura a referência ao elemento com id "resultado" e "resultado2" para poder manipular o conteúdo deles depois
 const resultado = document.getElementById("resultado");
 let resultado2 = document.getElementById("resultado2");
@@ -69,15 +57,7 @@ function mostrarPosicao(posicao) {
 <br> <a href="https://www.google.com.br/maps/@${latitude},${longitude},20z?entry=ttu" target="_blank">
 <h4>🌍 Ver no Google Maps</h4></a>`;
     // O link gerado leva diretamente para o Google Maps com as coordenadas obtidas
-
-    // Centraliza o mapa na localização do usuário e dá zoom
-    mapa.setView([latitude, longitude], 18);
-
-    // Adiciona um marcador com popup
-    L.marker([latitude, longitude])
-        .addTo(mapa)
-        .bindPopup("📍 Você está aqui!")
-        .openPopup();
+    atualizaMapa(latitude, longitude);
 }
 
 // Função ao clicar no botão "📌 Buscar Endereço" para buscar o endereço usando a API do OpenStreetMap
@@ -124,4 +104,27 @@ async function buscarEndereco() {
         resultado2.innerHTML = "❌ Erro ao buscar o endereço!";
         console.error("Erro ao buscar dados:", erro);
     };
+}
+
+// Inicializa o mapa com uma posição padrão
+const mapa = L.map("mapa").setView([-23.9828992, -48.8669184], 10);
+
+// Adiciona o mapa do OpenStreetMap
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '© OpenStreetMap contributors',
+}).addTo(mapa);
+
+// Variáveis globais para armazenar a latitude e longitude
+let latitude = null;
+let longitude = null;
+
+function atualizaMapa(latitude, longitude) {
+    // Centraliza o mapa na localização do usuário e dá zoom
+    mapa.setView([latitude, longitude], 19);
+
+    // Adiciona um marcador com popup
+    L.marker([latitude, longitude])
+        .addTo(mapa)
+        .bindPopup("📍 Você está aqui!")
+        .openPopup();
 }
