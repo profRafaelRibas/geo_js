@@ -6,77 +6,47 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <title>Find You</title>
+
+    <!-- Adição de recursos de mapa com o Leaflet -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        #mapa {
+            height: 500px;
+            width: 100%;
+            margin-top: 20px;
+        }
+    </style>
+
+    <title>I'll Find You</title>
 </head>
 
 <body>
     <h1 class="mb-5 pt-5 pb-3 text-center bg-success text-white display-5">🌍Exibindo seu posicionamento global🗺</h1>
     <div class="row d-flex justify-content-center">
-        <button type="button" class="btn btn-success m-3 w-25" onclick="pegarLocalizacao()">Pesquisar</button>
-        <div id="resultado" class="text-center">
+        <div class="col-12 col-md-6 text-center align-self-center">
+            <!-- Primeiro botão pega a localização -->
+            <button type="button" class="btn btn-primary m-3 w-25" onclick="pegarLocalizacao()">📍 Obter
+                Localização</button>
 
+            <div id="resultado" class="text-center"></div>
+
+
+            <!-- Segundo botão busca o endereço -->
+            <button type="button" class="btn btn-success m-3 w-25" onclick="buscarEndereco()">📌 Buscar
+                Endereço</button>
+
+            <div id="resultado2" class="text-center"></div>
+        </div>
+
+        <div class="col-12 col-md-6">
+            <!-- Div onde o mapa será carregado -->
+            <div id="mapa"></div>
         </div>
     </div>
 
-    <script>
-        // Captura a referência ao elemento com id "resultado" para poder manipular o conteúdo dele depois
-        const resultado = document.getElementById("resultado");
-
-        // Função chamada ao clicar no botão "Pesquisar"
-        function pegarLocalizacao() {
-            // Verifica se o navegador suporta o recurso de geolocalização
-            if (navigator.geolocation) {
-                // Se suportar, tenta obter a posição atual do usuário
-                // O método getCurrentPosition recebe duas funções:
-                // - A primeira (mostrarPosicao) é chamada se a localização for obtida com sucesso
-                // - A segunda (mostrarErro) é chamada se houver algum erro ao tentar obter a localização
-                // - O terceiro (opcional) permite personalizações 
-                navigator.geolocation.getCurrentPosition(mostrarPosicao, mostrarErro, {
-                    enableHighAccuracy: true, // Pede mais precisão
-                    timeout: 10000, // Espera até 10 segundos para obter a posição
-                    maximumAge: 0 // Garante que a posição não seja uma antiga salva em cache
-                });
-            } else {
-                // Caso o navegador não suporte geolocalização, exibe uma mensagem de aviso
-                resultado.innerHTML = "Geolocalização não é suportada por este navegador";
-            }
-        }
-
-        // Função chamada se houver erro ao tentar obter a localização
-        function mostrarErro(error) {
-            // Usa um "switch" para tratar diferentes tipos de erro que podem ocorrer
-            switch (error.code) {
-                case error.PERMISSION_DENIED:
-                    // Erro 1: O usuário negou a permissão para o site acessar a localização
-                    resultado.innerHTML = "O usuário negou a solicitação de geolocalização.";
-                    break;
-                case error.POSITION_UNAVAILABLE:
-                    // Erro 2: A localização não está disponível (GPS desligado, sem internet, etc.)
-                    resultado.innerHTML = "As informações de localização não estão disponíveis.";
-                    break;
-                case error.TIMEOUT:
-                    // Erro 3: O tempo para obter a localização expirou
-                    resultado.innerHTML = "A solicitação para obter a localização do usuário expirou";
-                    break;
-                case error.UNKNOWN_ERROR:
-                    // Erro 4: Algum erro desconhecido aconteceu
-                    resultado.innerHTML = "Ocorreu um erro desconhecido.";
-                    break;
-            }
-        }
-
-        // Função chamada quando a localização é obtida com sucesso
-        function mostrarPosicao(posicao) {
-            // Insere a latitude e longitude no elemento "resultado"
-            // `posicao.coords.latitude` e `posicao.coords.longitude` pegam os dados da posição retornada
-            resultado.innerHTML = `Latitude: ${posicao.coords.latitude}
-    <br>Longitude: ${posicao.coords.longitude}
-    <br> <a href="https://www.google.com.br/maps/@${posicao.coords.latitude},${posicao.coords.longitude},20z?entry=ttu" target="_blank">
-    <h4>Ver no mapa</h4></a>`;
-            // O link gerado leva diretamente para o Google Maps com as coordenadas obtidas
-        }
-
-    </script>
+    <script src="script.js"></script>
 </body>
 
 </html>
