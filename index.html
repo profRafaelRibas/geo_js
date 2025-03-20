@@ -70,7 +70,10 @@
             // Insere a latitude e longitude no elemento "resultado"
             // `posicao.coords.latitude` e `posicao.coords.longitude` pegam os dados da posição retornada
             resultado.innerHTML = `Latitude: ${posicao.coords.latitude}
-            <br>Longitude: ${posicao.coords.longitude} <br> <a href="https://www.google.com.br/maps/@${posicao.coords.latitude},${posicao.coords.longitude},20z?entry=ttu"><h4>Ver no mapa</h4></a>`
+    <br>Longitude: ${posicao.coords.longitude}
+    <br> <a href="https://www.google.com.br/maps/@${posicao.coords.latitude},${posicao.coords.longitude},20z?entry=ttu" target="_blank">
+    <h4>Ver no mapa</h4></a>`;
+            // O link gerado leva diretamente para o Google Maps com as coordenadas obtidas
         }
 
     </script>
