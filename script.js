@@ -6,12 +6,13 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
     attribution: '© OpenStreetMap contributors',
 }).addTo(mapa);
 
-
 // Variáveis globais para armazenar a latitude e longitude
 let latitude = null;
 let longitude = null;
-// Captura a referência ao elemento com id "mapa" e "resultado" para poder manipular o conteúdo deles depois
+
+// Captura a referência ao elemento com id "resultado" e "resultado2" para poder manipular o conteúdo deles depois
 const resultado = document.getElementById("resultado");
+let resultado2 = document.getElementById("resultado2");
 
 // Função chamada ao clicar no botão "📍 Obter Localização"
 function pegarLocalizacao() {
@@ -81,11 +82,10 @@ function mostrarPosicao(posicao) {
 
 // Função ao clicar no botão "📌 Buscar Endereço" para buscar o endereço usando a API do OpenStreetMap
 async function buscarEndereco() {
-    let resultado = document.getElementById("resultado2");
 
     // Verifica se as coordenadas foram obtidas
     if (latitude === null || longitude === null) {
-        resultado.innerHTML = "⚠️ Primeiro obtenha as coordenadas!";
+        resultado2.innerHTML = "⚠️ Primeiro obtenha as coordenadas!";
         return;
     }
 
@@ -106,7 +106,7 @@ async function buscarEndereco() {
         console.log(endereco);
 
         // Exibe o endereço formatado
-        resultado.innerHTML = `
+        resultado2.innerHTML = `
     <h3>📍 Detalhes do endereço:</h3>
     País: ${endereco.country || "N/A"}<br>
     Estado: ${endereco.state || "N/A"}<br>
@@ -121,7 +121,7 @@ async function buscarEndereco() {
 
 
     } catch (erro) {
-        resultado.innerHTML = "❌ Erro ao buscar o endereço!";
+        resultado2.innerHTML = "❌ Erro ao buscar o endereço!";
         console.error("Erro ao buscar dados:", erro);
     };
 }
